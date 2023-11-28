@@ -117,3 +117,28 @@ body {
     font-size: 18px;
     padding-left: .5%;
 }
+
+.popup {
+    position: absolute;
+    top: 7%;
+    left: 9%;
+    width: 80%;
+    height: 87%;
+    border-radius: 15px;
+    padding: 1%;
+    background-color: #cfc9c2;
+    overflow-y: auto;
+}
+
+.close-button {
+    display: block;
+    position: relative;
+    border: none;
+    padding: 0;
+    width: 4%;
+    height: 4%;
+    margin-left: 95%;
+    border-radius: 50%;
+    font: inherit;
+    cursor: pointer;
+}
