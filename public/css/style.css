@@ -7,7 +7,17 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 90%;
+    width: 85%;
+    height: 2.2%;
+    padding: .5% 0% .5% 0%;
+    background-color: #32302f;
+}
+
+.about {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15%;
     padding: .5% 0% .5% 0%;
     background-color: #32302f;
 }
@@ -16,45 +26,13 @@ body {
     display: inline;
     color: #f9f5d7;
     background-color: #32302f;
-    padding: .5%;
-    margin-right: -.5%;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.tab:hover {
-    background-color: #504945;
-}
-
-.selected-tab {
-    display: inline;
-    color: #f9f5d7;
-    background-color: #c26c00;
-    padding: .5%;
-    margin-right: -.5%;
-    border-radius: 5px;
-}
-
-.about {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 10%;
-    padding: .5% 0% .5% 0%;
-    background-color: #32302f;
-}
-
-.tab-1 {
-    display: inline;
-    color: #f9f5d7;
-    background-color: #32302f;
-    padding: 5%;
+    padding: 3%;
     margin-right: -1%;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.tab-1:hover {
+.tab:hover {
     background-color: #504945;
 }
 
