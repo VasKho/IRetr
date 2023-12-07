@@ -21,7 +21,7 @@ class Index:
         self.client = QdrantClient(":memory:")
         self.client.recreate_collection(
             collection_name=name,
-            vectors_config=VectorParams(size=vector_size, distance=Distance.DOT),
+            vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE),
         )
 
 
@@ -62,14 +62,22 @@ class Index:
             limit=5
         )
         res = []
+        tmp_res = {}
         active_indices = q.get_active_indices(feature_names)
+        num_arr = []
         for hit in hits:
+            num = 0
+            for i in range(len(vec)):
+                if vec[i] != 0 and hit.vector[i] != 0:
+                    num += 1
             words = [feature_names[word_ind] for word_ind in active_indices if hit.vector[word_ind] > 0]
             if not set(q.strict_words) <= set(words):
                 continue
-            res.append({
+            print("Score: "+str(hit.score))
+            tmp_res.update({hit.score+num*100: {
                 "name": self.documents[hit.id].title,
                 "words": words,
-                "url": hit.payload["url"]
-            })
-        return res
+                "url": hit.payload["url"],
+            }})
+        res = dict(sorted(tmp_res.items(), reverse=True))
+        return [x for x in res.values()]
