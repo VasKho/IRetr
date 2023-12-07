@@ -79,5 +79,28 @@ class Index:
                 "words": words,
                 "url": hit.payload["url"],
             }})
-        res = dict(sorted(tmp_res.items(), reverse=True))
-        return [x for x in res.values()]
+        res = [x for x in dict(sorted(tmp_res.items(), reverse=True)).values()]
+        recs = []
+        with open("./public" + res[0]["url"], "rt") as top_file:
+            doc = Document("", top_file)
+            vector = self.vectorizer.transform([doc.text]).toarray()[0]
+            hits = self.client.search(
+                collection_name=collection_name,
+                query_vector=vector,
+                with_vectors=True,
+                limit=8
+            )
+            hits = [x for x in hits if x.payload["url"] not in [y["url"] for y in res]]
+            tmp_recs = {}
+            for hit in hits:
+                tmp_recs.update({hit.score: {
+                    "name": self.documents[hit.id].title,
+                    "words": words,
+                    "url": hit.payload["url"],
+                }})
+            recs = [x for x in dict(sorted(tmp_recs.items(), reverse=True)).values()]
+                
+            
+            
+        #return { results: [x for x in res.values()], recommendations: [x for x in recommentations.values()]}
+        return { "results": res, "recommendations": recs }

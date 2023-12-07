@@ -39,9 +39,13 @@ const search = async (query) => {
     },
     body: JSON.stringify({ "query": query })
   }).then(response=>response.json());
+  
   document.querySelector('.search-results').replaceChildren();
-  for (const doc of response) {
+  for (const doc of response["results"]) {
     add_search_result(doc.name, doc.words, doc.url);
+  }
+  for (const doc of response["recommendations"]) {
+    add_search_result(`${doc.name} [RECOMMENDED]`, doc.words, doc.url);
   }
 };
 
