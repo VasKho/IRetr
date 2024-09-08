@@ -4,18 +4,30 @@ from src.query import Query
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 from sklearn.feature_extraction.text import TfidfVectorizer
-
+import schedule
+import time
+from threading import Thread
 class Index:
     def __init__(self, name: str, data_dir: str):
         self.data_dir = data_dir
+        self.name = name
         self.vectorizer = TfidfVectorizer()
         self.documents = list()
         self.vec_dim = 0
 
-        self.__load_documents()
-        self.__init_collection(name, self.vec_dim)
-        self.__load_vectors(name, self.vectors)
+        self.__initialize__()
+        schedule.every(10).minutes.do(self.__initialize__)
+        t1 = Thread(target=self.update_loop)
+        t1.start()
 
+    def update_loop(self):
+        while(True):
+            schedule.run_pending()
+            time.sleep(1)
+    def __initialize__(self):
+        self.__load_documents()
+        self.__init_collection(self.name, self.vec_dim)
+        self.__load_vectors(self.name, self.vectors)
 
     def __init_collection(self, name: str, vector_size: int):
         self.client = QdrantClient(":memory:")
